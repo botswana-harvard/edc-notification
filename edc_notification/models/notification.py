@@ -1,9 +1,10 @@
 from django.db import models
 
 from edc_base.model.models import BaseUuidModel
+from edc_sync.models import SyncModelMixin
 
 
-class Notification(BaseUuidModel):
+class Notification(SyncModelMixin, BaseUuidModel):
 
     notification_plan_name = models.CharField(max_length=200)
 
@@ -23,16 +24,12 @@ class Notification(BaseUuidModel):
         choices=(
             ('new', 'New'),
             ('sent', 'Sent'),
-            ('cancelled', 'Cancelled'),
-        ),
-    )
+            ('cancelled', 'Cancelled')))
 
     sent = models.BooleanField(default=False)
 
     sent_datetime = models.DateTimeField(null=True)
 
-    objects = models.Manager()
-
     class Meta:
-        app_label = 'edc_notification'
+        app_label = 'notification'
         ordering = ('notification_datetime', )

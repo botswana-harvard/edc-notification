@@ -1,14 +1,15 @@
-from datetime import datetime
-
 import json
 
-from ..models import NotificationPlan, Notification
+from datetime import datetime
+
+from .notification import Notification
+from .notification_plan import NotificationPlan
 
 
 class NotificationHelper(object):
 
     def update_plan(self, notification_plan_setup):
-        """Creates or updates the edc_notification plan model instance
+        """Creates or updates the notification plan model instance
         using a given notification_plan_setup dictionary."""
         for notification_plan_name, notification_plan in notification_plan_setup.iteritems():
             try:
@@ -26,14 +27,13 @@ class NotificationHelper(object):
                     friendly_name=notification_plan.get('friendly_name'),
                     subject_format=notification_plan.get('subject_format'),
                     body_format=notification_plan.get('body_format'),
-                    cc_list=json.dumps(notification_plan.get('cc_list')),
-                )
+                    cc_list=json.dumps(notification_plan.get('cc_list')))
 
     def queue_notification(self, plan_name, export_filename, exit_status,
                            export_datetime=None, transaction_count=None):
-        """Queues a edc_notification by writing a NotificationPlan model instance.
+        """Queues a notification by writing a NotificationPlan model instance.
 
-        Returns the edc_notification plan model instance"""
+        Returns the notification plan model instance"""
         export_datetime = export_datetime or datetime.today()
         transaction_count = transaction_count or 0
         notification_plan = NotificationPlan.objects.get(name=plan_name)
@@ -51,5 +51,4 @@ class NotificationHelper(object):
                 tx_count=transaction_count,
                 export_datetime=export_datetime.strftime('%d %B %Y')),
             recipient_list=notification_plan.recipient_list,
-            cc_list=notification_plan.cc_list,
-        )
+            cc_list=notification_plan.cc_list)
