@@ -23,4 +23,4 @@ class NotificationPlan(SyncModelMixin, BaseUuidModel):
         return False
 
     class Meta:
-        app_label = 'notification'
+        app_label = 'edc_notification'
