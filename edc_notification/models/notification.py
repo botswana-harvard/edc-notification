@@ -31,5 +31,5 @@ class Notification(SyncModelMixin, BaseUuidModel):
     sent_datetime = models.DateTimeField(null=True)
 
     class Meta:
-        app_label = 'notification'
+        app_label = 'edc_notification'
         ordering = ('notification_datetime', )
